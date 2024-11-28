@@ -1,19 +1,20 @@
-prometheus:
-  prometheusSpec:
-    serviceMonitorSelector:
-      matchLabels:
-        release: prometheus
-
-grafana:
+server:
   enabled: true
-  adminPassword: "admin123" # Use a secure password
-  ingress:
+  service:
+    type: ClusterIP
+    port: 9090
+  persistentVolume:
     enabled: true
-    annotations:
-      nginx.ingress.kubernetes.io/rewrite-target: /
-    hosts:
-      - grafana.dev.example.com
-    tls:
-      - secretName: grafana-tls
-        hosts:
-          - grafana.dev.example.com
+    size: 10Gi
+    storageClass: standard # Replace with your cluster's storage class
+
+alertmanager:
+  enabled: false # Disable Alertmanager if not required
+
+pushgateway:
+  enabled: false # Disable Pushgateway if not required
+
+# Customize retention policy
+prometheusSpec:
+  retention: 15d
+  scrapeInterval: 15s
