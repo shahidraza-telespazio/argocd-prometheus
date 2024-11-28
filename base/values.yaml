@@ -1,0 +1,19 @@
+prometheus:
+  prometheusSpec:
+    serviceMonitorSelector:
+      matchLabels:
+        release: prometheus
+
+grafana:
+  enabled: true
+  adminPassword: "admin123" # Use a secure password
+  ingress:
+    enabled: true
+    annotations:
+      nginx.ingress.kubernetes.io/rewrite-target: /
+    hosts:
+      - grafana.dev.example.com
+    tls:
+      - secretName: grafana-tls
+        hosts:
+          - grafana.dev.example.com
